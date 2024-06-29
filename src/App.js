@@ -1,25 +1,27 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import WeatherForm from './components/WeatherForm';
+import WeatherInfo from './components/WeatherInfo';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [weather, setWeather] = useState(null);
+
+  const fetchWeather = async (city) => {
+    const apiKey = '163e47a4291b5042807f38e9a2e70585'; 
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
+    );
+    const data = await response.json();
+    setWeather(data);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <h1>Weather App</h1>
+      <WeatherForm fetchWeather={fetchWeather} />
+      <WeatherInfo weather={weather} />
     </div>
   );
-}
+};
 
 export default App;
